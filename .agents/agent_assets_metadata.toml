@@ -1,0 +1,26 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "djoi7xHxx08mzr4knWnym"
+uri = "file://artifacts/imparables/public/images/hero.png"
+type = "image"
+title = "hero banner natural products"
+
+[[generated]]
+id = "GZml9U5W6IKRy-haYIAbg"
+uri = "file://artifacts/imparables/public/images/product-1.png"
+type = "image"
+title = "organic herbal supplement bottle"
+
+[[generated]]
+id = "9uy-w9ml5OcLdRligzIrr"
+uri = "file://artifacts/imparables/public/images/product-2.png"
+type = "image"
+title = "essential oils and leaves"
+
+[[generated]]
+id = "EX_EAfqPkPzLQL1tGa1tL"
+uri = "file://artifacts/imparables/public/images/culture.png"
+type = "image"
+title = "vibrant company culture"

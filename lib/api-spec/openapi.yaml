@@ -3,13 +3,24 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: API specification for Imparables SA - Sistema de gestión naturista
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: vendedores
+    description: Gestión de vendedores
+  - name: clientes
+    description: Gestión de clientes
+  - name: productos
+    description: Gestión de productos
+  - name: ventas
+    description: Gestión de ventas
+  - name: reportes
+    description: Reportes y estadísticas
+
 paths:
   /healthz:
     get:
@@ -24,6 +35,595 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  # VENDEDORES
+  /vendedores:
+    get:
+      operationId: listVendedores
+      tags: [vendedores]
+      summary: Listar vendedores
+      responses:
+        "200":
+          description: Lista de vendedores
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Vendedor"
+    post:
+      operationId: createVendedor
+      tags: [vendedores]
+      summary: Registrar vendedor
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateVendedorBody"
+      responses:
+        "201":
+          description: Vendedor creado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Vendedor"
+        "400":
+          description: Error de validación
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /vendedores/{id}:
+    get:
+      operationId: getVendedor
+      tags: [vendedores]
+      summary: Obtener vendedor por ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Vendedor encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Vendedor"
+        "404":
+          description: No encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      operationId: updateVendedor
+      tags: [vendedores]
+      summary: Modificar vendedor
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateVendedorBody"
+      responses:
+        "200":
+          description: Vendedor actualizado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Vendedor"
+        "404":
+          description: No encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      operationId: deleteVendedor
+      tags: [vendedores]
+      summary: Eliminar vendedor
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Vendedor eliminado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteResponse"
+        "404":
+          description: No encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # CLIENTES
+  /clientes:
+    get:
+      operationId: listClientes
+      tags: [clientes]
+      summary: Listar clientes con dirección
+      responses:
+        "200":
+          description: Lista de clientes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ClienteConDireccion"
+    post:
+      operationId: createCliente
+      tags: [clientes]
+      summary: Registrar cliente y dirección
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateClienteBody"
+      responses:
+        "201":
+          description: Cliente creado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClienteConDireccion"
+        "400":
+          description: Error de validación
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /clientes/{id}:
+    get:
+      operationId: getCliente
+      tags: [clientes]
+      summary: Obtener cliente por ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Cliente encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClienteConDireccion"
+        "404":
+          description: No encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      operationId: updateCliente
+      tags: [clientes]
+      summary: Modificar cliente y dirección
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateClienteBody"
+      responses:
+        "200":
+          description: Cliente actualizado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClienteConDireccion"
+        "404":
+          description: No encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      operationId: deleteCliente
+      tags: [clientes]
+      summary: Eliminar cliente
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Cliente eliminado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteResponse"
+        "404":
+          description: No encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # PRODUCTOS
+  /productos:
+    get:
+      operationId: listProductos
+      tags: [productos]
+      summary: Listar productos
+      responses:
+        "200":
+          description: Lista de productos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Producto"
+    post:
+      operationId: createProducto
+      tags: [productos]
+      summary: Registrar producto
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateProductoBody"
+      responses:
+        "201":
+          description: Producto creado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Producto"
+        "400":
+          description: Error de validación
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /productos/{id}:
+    get:
+      operationId: getProducto
+      tags: [productos]
+      summary: Obtener producto por ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Producto encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Producto"
+        "404":
+          description: No encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      operationId: updateProducto
+      tags: [productos]
+      summary: Modificar producto
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateProductoBody"
+      responses:
+        "200":
+          description: Producto actualizado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Producto"
+        "404":
+          description: No encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      operationId: deleteProducto
+      tags: [productos]
+      summary: Eliminar producto
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Producto eliminado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteResponse"
+        "404":
+          description: No encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # VENTAS
+  /ventas:
+    get:
+      operationId: listVentas
+      tags: [ventas]
+      summary: Listar ventas
+      responses:
+        "200":
+          description: Lista de ventas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/VentaConDetalle"
+    post:
+      operationId: createVenta
+      tags: [ventas]
+      summary: Registrar venta
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateVentaBody"
+      responses:
+        "201":
+          description: Venta creada
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VentaConDetalle"
+        "400":
+          description: Error de validación
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /ventas/{id}:
+    get:
+      operationId: getVenta
+      tags: [ventas]
+      summary: Obtener venta por ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Venta encontrada
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VentaConDetalle"
+        "404":
+          description: No encontrada
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      operationId: updateVenta
+      tags: [ventas]
+      summary: Modificar venta
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateVentaBody"
+      responses:
+        "200":
+          description: Venta actualizada
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VentaConDetalle"
+        "404":
+          description: No encontrada
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      operationId: deleteVenta
+      tags: [ventas]
+      summary: Eliminar venta
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Venta eliminada
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteResponse"
+        "404":
+          description: No encontrada
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # REPORTES
+  /reportes/ventas-por-rango:
+    get:
+      operationId: getVentasPorRango
+      tags: [reportes]
+      summary: Total de ventas en rango de fechas
+      parameters:
+        - name: fechaInicio
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: fechaFin
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+      responses:
+        "200":
+          description: Total de ventas
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TotalVentasRango"
+
+  /reportes/por-cliente:
+    get:
+      operationId: getVentasPorCliente
+      tags: [reportes]
+      summary: Total por cliente en rango de fechas
+      parameters:
+        - name: fechaInicio
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: fechaFin
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+      responses:
+        "200":
+          description: Totales por cliente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TotalPorCliente"
+
+  /reportes/por-vendedor:
+    get:
+      operationId: getVentasPorVendedor
+      tags: [reportes]
+      summary: Total por vendedor en rango de fechas
+      parameters:
+        - name: fechaInicio
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: fechaFin
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+      responses:
+        "200":
+          description: Totales por vendedor
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TotalPorVendedor"
+
+  /reportes/por-producto:
+    get:
+      operationId: getVentasPorProducto
+      tags: [reportes]
+      summary: Total por producto en rango de fechas
+      parameters:
+        - name: fechaInicio
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: fechaFin
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+      responses:
+        "200":
+          description: Totales por producto
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TotalPorProducto"
+
+  /reportes/resumen:
+    get:
+      operationId: getResumenDashboard
+      tags: [reportes]
+      summary: Resumen general del dashboard
+      responses:
+        "200":
+          description: Resumen del sistema
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResumenDashboard"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +634,319 @@ components:
       required:
         - status
 
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error
+
+    DeleteResponse:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+        - message
+
+    Vendedor:
+      type: object
+      properties:
+        idVendedor:
+          type: integer
+        nombre:
+          type: string
+        primerApellido:
+          type: string
+        segundoApellido:
+          type: ["string", "null"]
+      required:
+        - idVendedor
+        - nombre
+        - primerApellido
+
+    CreateVendedorBody:
+      type: object
+      properties:
+        nombre:
+          type: string
+        primerApellido:
+          type: string
+        segundoApellido:
+          type: ["string", "null"]
+      required:
+        - nombre
+        - primerApellido
+
+    Direccion:
+      type: object
+      properties:
+        idDireccion:
+          type: integer
+        calle:
+          type: string
+        numero:
+          type: string
+        colonia:
+          type: string
+        ciudad:
+          type: string
+        latitud:
+          type: ["number", "null"]
+        longitud:
+          type: ["number", "null"]
+      required:
+        - idDireccion
+        - calle
+        - numero
+        - colonia
+        - ciudad
+
+    ClienteConDireccion:
+      type: object
+      properties:
+        idCliente:
+          type: integer
+        nombre:
+          type: string
+        primerApellido:
+          type: string
+        segundoApellido:
+          type: ["string", "null"]
+        registrado:
+          type: string
+        direccion:
+          $ref: "#/components/schemas/Direccion"
+      required:
+        - idCliente
+        - nombre
+        - primerApellido
+        - registrado
+
+    CreateClienteBody:
+      type: object
+      properties:
+        nombre:
+          type: string
+        primerApellido:
+          type: string
+        segundoApellido:
+          type: ["string", "null"]
+        registrado:
+          type: string
+        calle:
+          type: string
+        numero:
+          type: string
+        colonia:
+          type: string
+        ciudad:
+          type: string
+        latitud:
+          type: ["number", "null"]
+        longitud:
+          type: ["number", "null"]
+      required:
+        - nombre
+        - primerApellido
+        - registrado
+        - calle
+        - numero
+        - colonia
+        - ciudad
+
+    Producto:
+      type: object
+      properties:
+        idProducto:
+          type: integer
+        nombreProducto:
+          type: string
+        precio:
+          type: number
+      required:
+        - idProducto
+        - nombreProducto
+        - precio
+
+    CreateProductoBody:
+      type: object
+      properties:
+        nombreProducto:
+          type: string
+        precio:
+          type: number
+      required:
+        - nombreProducto
+        - precio
+
+    DetalleVenta:
+      type: object
+      properties:
+        idDetalle:
+          type: integer
+        idProducto:
+          type: integer
+        nombreProducto:
+          type: string
+        cantidad:
+          type: integer
+        subtotal:
+          type: number
+      required:
+        - idDetalle
+        - idProducto
+        - nombreProducto
+        - cantidad
+        - subtotal
+
+    VentaConDetalle:
+      type: object
+      properties:
+        idVenta:
+          type: integer
+        fecha:
+          type: string
+        idCliente:
+          type: integer
+        nombreCliente:
+          type: string
+        idVendedor:
+          type: integer
+        nombreVendedor:
+          type: string
+        total:
+          type: number
+        detalles:
+          type: array
+          items:
+            $ref: "#/components/schemas/DetalleVenta"
+      required:
+        - idVenta
+        - fecha
+        - idCliente
+        - nombreCliente
+        - idVendedor
+        - nombreVendedor
+        - total
+        - detalles
+
+    CreateDetalleVentaItem:
+      type: object
+      properties:
+        idProducto:
+          type: integer
+        cantidad:
+          type: integer
+      required:
+        - idProducto
+        - cantidad
+
+    CreateVentaBody:
+      type: object
+      properties:
+        idCliente:
+          type: integer
+        idVendedor:
+          type: integer
+        detalles:
+          type: array
+          items:
+            $ref: "#/components/schemas/CreateDetalleVentaItem"
+      required:
+        - idCliente
+        - idVendedor
+        - detalles
+
+    TotalVentasRango:
+      type: object
+      properties:
+        fechaInicio:
+          type: string
+        fechaFin:
+          type: string
+        totalVentas:
+          type: number
+      required:
+        - fechaInicio
+        - fechaFin
+        - totalVentas
+
+    TotalPorCliente:
+      type: object
+      properties:
+        idCliente:
+          type: integer
+        nombre:
+          type: string
+        primerApellido:
+          type: string
+        segundoApellido:
+          type: ["string", "null"]
+        totalCliente:
+          type: number
+      required:
+        - idCliente
+        - nombre
+        - primerApellido
+        - totalCliente
+
+    TotalPorVendedor:
+      type: object
+      properties:
+        idVendedor:
+          type: integer
+        nombre:
+          type: string
+        primerApellido:
+          type: string
+        segundoApellido:
+          type: ["string", "null"]
+        totalVendedor:
+          type: number
+      required:
+        - idVendedor
+        - nombre
+        - primerApellido
+        - totalVendedor
+
+    TotalPorProducto:
+      type: object
+      properties:
+        idProducto:
+          type: integer
+        nombreProducto:
+          type: string
+        totalPiezas:
+          type: integer
+        totalVendido:
+          type: number
+      required:
+        - idProducto
+        - nombreProducto
+        - totalPiezas
+        - totalVendido
+
+    ResumenDashboard:
+      type: object
+      properties:
+        totalVendedores:
+          type: integer
+        totalClientes:
+          type: integer
+        totalProductos:
+          type: integer
+        totalVentas:
+          type: integer
+        montoTotalMes:
+          type: number
+        ventasHoy:
+          type: integer
+      required:
+        - totalVendedores
+        - totalClientes
+        - totalProductos
+        - totalVentas
+        - montoTotalMes
+        - ventasHoy
