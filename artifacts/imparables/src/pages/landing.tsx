@@ -1,7 +1,11 @@
 import React from "react";
 import { Link } from "wouter";
-import { ArrowRight, Leaf, ShieldCheck, Zap } from "lucide-react";
+import { ArrowRight, Leaf, ShieldCheck, Zap, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
+
+function scrollTo(id: string) {
+  document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+}
 
 export default function LandingPage() {
   return (
@@ -13,7 +17,7 @@ export default function LandingPage() {
         <nav className="hidden md:flex items-center gap-8">
           <a href="#nosotros" className="text-sm font-medium text-foreground hover:text-primary transition-colors">Nosotros</a>
           <a href="#productos" className="text-sm font-medium text-foreground hover:text-primary transition-colors">Productos</a>
-          <a href="#cultura" className="text-sm font-medium text-foreground hover:text-primary transition-colors">Cultura</a>
+          <a href="#cultura" onClick={(e) => { e.preventDefault(); scrollTo("cultura"); }} className="text-sm font-medium text-foreground hover:text-primary transition-colors cursor-pointer">Cultura</a>
         </nav>
         <Link href="/dashboard">
           <Button className="bg-secondary text-secondary-foreground hover:bg-secondary/90 font-semibold rounded-full px-6">
@@ -46,7 +50,7 @@ export default function LandingPage() {
                   Portal de Gestión <ArrowRight className="w-5 h-5" />
                 </Button>
               </Link>
-              <Button size="lg" variant="outline" className="h-14 px-8 text-lg rounded-full w-full sm:w-auto border-border text-foreground hover:bg-accent/10">
+              <Button size="lg" variant="outline" onClick={() => scrollTo("nosotros")} className="h-14 px-8 text-lg rounded-full w-full sm:w-auto border-border text-foreground hover:bg-accent/10">
                 Conocer Más
               </Button>
             </div>
@@ -103,18 +107,54 @@ export default function LandingPage() {
             
             <div className="grid md:grid-cols-2 gap-8">
               <div className="group relative rounded-2xl overflow-hidden shadow-lg aspect-square">
-                <img src="/images/product-1.png" alt="Suplementos" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                <img src="https://res.cloudinary.com/djapqg8qv/image/upload/v1778194968/spirulina_n5aza0.jpg" alt="Suplementos Orgánicos" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-8">
                   <h3 className="text-white text-2xl font-bold mb-2">Suplementos Orgánicos</h3>
                   <p className="text-white/80">Fórmulas concentradas para vitalidad diaria.</p>
                 </div>
               </div>
               <div className="group relative rounded-2xl overflow-hidden shadow-lg aspect-square">
-                <img src="/images/product-2.png" alt="Esencias" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                <img src="https://res.cloudinary.com/djapqg8qv/image/upload/v1778194964/Cafe_athtgy.jpg" alt="Alimentos Orgánicos" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-8">
-                  <h3 className="text-white text-2xl font-bold mb-2">Extractos Puros</h3>
+                  <h3 className="text-white text-2xl font-bold mb-2">Alimentos Orgánicos</h3>
                   <p className="text-white/80">Gotas de la naturaleza extraídas con precisión.</p>
                 </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="cultura" className="py-24 px-6 md:px-12 bg-card">
+          <div className="max-w-7xl mx-auto text-center">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/20 text-accent font-medium text-sm mb-6">
+              <Heart className="w-4 h-4" />
+              <span>Nuestros valores</span>
+            </div>
+            <h2 className="text-3xl md:text-5xl font-serif font-bold mb-6 text-foreground">Cultura Imparable</h2>
+            <p className="text-muted-foreground text-lg mb-16 max-w-2xl mx-auto leading-relaxed">
+              Somos una comunidad unida por la convicción de que el bienestar natural transforma vidas. Nuestros valores guían cada decisión, cada producto y cada relación.
+            </p>
+            <div className="grid md:grid-cols-3 gap-8">
+              <div className="bg-background rounded-2xl p-8 shadow-sm border border-border">
+                <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-5">
+                  <Leaf className="w-7 h-7 text-primary" />
+                </div>
+                <h3 className="text-xl font-bold mb-3">Pureza Natural</h3>
+                <p className="text-muted-foreground leading-relaxed">Nos comprometemos con productos libres de aditivos artificiales, respetando el origen de cada ingrediente.</p>
+              </div>
+              <div className="bg-background rounded-2xl p-8 shadow-sm border border-border">
+                <div className="w-14 h-14 rounded-full bg-secondary/10 flex items-center justify-center mx-auto mb-5">
+                  <Zap className="w-7 h-7 text-secondary" />
+                </div>
+                <h3 className="text-xl font-bold mb-3">Crecimiento Constante</h3>
+                <p className="text-muted-foreground leading-relaxed">Impulsamos a cada vendedor y cliente a superar sus metas. Imparables significa nunca detenerse.</p>
+              </div>
+              <div className="bg-background rounded-2xl p-8 shadow-sm border border-border">
+                <div className="w-14 h-14 rounded-full bg-accent/10 flex items-center justify-center mx-auto mb-5">
+                  <ShieldCheck className="w-7 h-7 text-accent" />
+                </div>
+                <h3 className="text-xl font-bold mb-3">Confianza Total</h3>
+                <p className="text-muted-foreground leading-relaxed">Cada producto que distribuimos ha sido verificado para garantizar la máxima calidad y seguridad para nuestros clientes.</p>
               </div>
             </div>
           </div>
