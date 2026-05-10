@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useLocation } from "wouter";
-import { LayoutDashboard, PlusCircle, List, Edit, LogOut } from "lucide-react";
+import { LayoutDashboard, PlusCircle, List, Edit, LogOut, Users } from "lucide-react";
 import { useAuth } from "@/context/auth";
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -9,7 +9,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 export function Sidebar({ children }: { children: React.ReactNode }) {
   const [location, setLocation] = useLocation();
-  const { username, logout } = useAuth();
+  const { username, logout, isAdmin } = useAuth();
 
   const links = [
     { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -33,7 +33,8 @@ export function Sidebar({ children }: { children: React.ReactNode }) {
             </div>
           </Link>
         </div>
-        <nav className="flex-1 px-4 py-6 space-y-2">
+
+        <nav className="flex-1 px-4 py-6 space-y-1">
           {links.map((link) => {
             const isActive = location.startsWith(link.href);
             return (
@@ -47,12 +48,34 @@ export function Sidebar({ children }: { children: React.ReactNode }) {
               </Link>
             );
           })}
+
+          {isAdmin && (
+            <>
+              <div className="pt-3 pb-1 px-4">
+                <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Administración</p>
+              </div>
+              <Link
+                href="/usuarios"
+                className={`flex items-center gap-3 px-4 py-3 rounded-md transition-colors ${location.startsWith("/usuarios") ? "bg-sidebar-primary text-sidebar-primary-foreground font-medium shadow-sm" : "text-sidebar-foreground hover:bg-sidebar-accent/20 hover:text-sidebar-primary"}`}
+              >
+                <Users className="h-5 w-5" />
+                Gestión de Usuarios
+              </Link>
+            </>
+          )}
         </nav>
+
         <div className="p-4 border-t border-sidebar-border space-y-2">
           {username && (
-            <p className="text-xs text-muted-foreground text-center px-2 truncate">
-              Sesión: <span className="font-medium">{username}</span>
-            </p>
+            <div className="flex items-center gap-2 px-2 py-1">
+              <div className="w-7 h-7 rounded-full bg-primary/20 flex items-center justify-center text-xs font-bold text-primary flex-shrink-0">
+                {username.charAt(0).toUpperCase()}
+              </div>
+              <div className="min-w-0">
+                <p className="text-xs font-medium text-foreground truncate">{username}</p>
+                <p className="text-xs text-muted-foreground">{isAdmin ? "Administrador" : "Vendedor"}</p>
+              </div>
+            </div>
           )}
           <button
             onClick={handleLogout}
@@ -64,6 +87,7 @@ export function Sidebar({ children }: { children: React.ReactNode }) {
           </button>
         </div>
       </aside>
+
       <main className="flex-1 flex flex-col min-w-0 overflow-hidden">
         <header className="md:hidden h-16 border-b border-border flex items-center justify-between px-4 bg-background">
           <Link href="/">

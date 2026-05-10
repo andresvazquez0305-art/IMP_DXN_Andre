@@ -11,12 +11,20 @@ import Dashboard from "@/pages/dashboard";
 import Registrar from "@/pages/registrar";
 import Listas from "@/pages/listas";
 import Editar from "@/pages/editar";
+import Usuarios from "@/pages/usuarios";
 
 const queryClient = new QueryClient();
 
 function ProtectedRoute({ component: Component }: { component: React.ComponentType }) {
   const { isAuthenticated } = useAuth();
   if (!isAuthenticated) return <Redirect to="/login" />;
+  return <Component />;
+}
+
+function AdminRoute({ component: Component }: { component: React.ComponentType }) {
+  const { isAuthenticated, isAdmin } = useAuth();
+  if (!isAuthenticated) return <Redirect to="/login" />;
+  if (!isAdmin) return <Redirect to="/dashboard" />;
   return <Component />;
 }
 
@@ -36,6 +44,9 @@ function Router() {
       </Route>
       <Route path="/editar">
         {() => <ProtectedRoute component={Editar} />}
+      </Route>
+      <Route path="/usuarios">
+        {() => <AdminRoute component={Usuarios} />}
       </Route>
       <Route component={NotFound} />
     </Switch>
