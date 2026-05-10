@@ -1,5 +1,4 @@
 uploads = []
-outputs = []
 
 [[generated]]
 id = "djoi7xHxx08mzr4knWnym"
@@ -24,3 +23,9 @@ id = "EX_EAfqPkPzLQL1tGa1tL"
 uri = "file://artifacts/imparables/public/images/culture.png"
 type = "image"
 title = "vibrant company culture"
+
+[[outputs]]
+id = "B0GteKsZGrDJhqFD4-QbQ"
+uri = "file://imparables_dxn.zip"
+type = "unspecified"
+title = "Imparables SA — Schema MySQL (phpMyAdmin)"
