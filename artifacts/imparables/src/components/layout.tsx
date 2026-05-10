@@ -1,13 +1,15 @@
 import React from "react";
 import { Link, useLocation } from "wouter";
-import { LayoutDashboard, PlusCircle, List, Edit } from "lucide-react";
+import { LayoutDashboard, PlusCircle, List, Edit, LogOut } from "lucide-react";
+import { useAuth } from "@/context/auth";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return <Sidebar>{children}</Sidebar>;
 }
 
 export function Sidebar({ children }: { children: React.ReactNode }) {
-  const [location] = useLocation();
+  const [location, setLocation] = useLocation();
+  const { username, logout } = useAuth();
 
   const links = [
     { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -15,6 +17,11 @@ export function Sidebar({ children }: { children: React.ReactNode }) {
     { href: "/listas", label: "Listas & Reportes", icon: List },
     { href: "/editar", label: "Editar & Eliminar", icon: Edit },
   ];
+
+  const handleLogout = () => {
+    logout();
+    setLocation("/login");
+  };
 
   return (
     <div className="flex min-h-screen bg-background">
@@ -30,17 +37,31 @@ export function Sidebar({ children }: { children: React.ReactNode }) {
           {links.map((link) => {
             const isActive = location.startsWith(link.href);
             return (
-              <Link key={link.href} href={link.href} className={`flex items-center gap-3 px-4 py-3 rounded-md transition-colors ${isActive ? "bg-sidebar-primary text-sidebar-primary-foreground font-medium shadow-sm" : "text-sidebar-foreground hover:bg-sidebar-accent/20 hover:text-sidebar-primary"}`}>
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`flex items-center gap-3 px-4 py-3 rounded-md transition-colors ${isActive ? "bg-sidebar-primary text-sidebar-primary-foreground font-medium shadow-sm" : "text-sidebar-foreground hover:bg-sidebar-accent/20 hover:text-sidebar-primary"}`}
+              >
                 <link.icon className="h-5 w-5" />
                 {link.label}
               </Link>
             );
           })}
         </nav>
-        <div className="p-4 border-t border-sidebar-border">
-          <Link href="/" className="flex justify-center items-center px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors">
-            Volver a la web
-          </Link>
+        <div className="p-4 border-t border-sidebar-border space-y-2">
+          {username && (
+            <p className="text-xs text-muted-foreground text-center px-2 truncate">
+              Sesión: <span className="font-medium">{username}</span>
+            </p>
+          )}
+          <button
+            onClick={handleLogout}
+            data-testid="button-logout"
+            className="w-full flex items-center justify-center gap-2 px-4 py-2 text-sm text-muted-foreground hover:text-destructive transition-colors rounded-md hover:bg-destructive/10"
+          >
+            <LogOut className="w-4 h-4" />
+            Cerrar sesión
+          </button>
         </div>
       </aside>
       <main className="flex-1 flex flex-col min-w-0 overflow-hidden">
@@ -50,6 +71,12 @@ export function Sidebar({ children }: { children: React.ReactNode }) {
               Imparables<span className="text-secondary">SA</span>
             </div>
           </Link>
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-1 text-sm text-muted-foreground hover:text-destructive transition-colors"
+          >
+            <LogOut className="w-4 h-4" />
+          </button>
         </header>
         <div className="flex-1 overflow-auto p-4 md:p-8">
           {children}
