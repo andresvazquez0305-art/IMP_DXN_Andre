@@ -17,7 +17,7 @@ export default function LandingPage() {
           <a href="#productos" className="text-sm font-medium text-foreground hover:text-primary transition-colors">Productos</a>
           <a href="#cultura" onClick={(e) => { e.preventDefault(); scrollTo("cultura"); }} className="text-sm font-medium text-foreground hover:text-primary transition-colors cursor-pointer">Cultura</a>
         </nav>
-        <Link href="/login">
+        <Link href="/sign-in">
           <Button className="bg-secondary text-secondary-foreground hover:bg-secondary/90 font-semibold rounded-full px-6">
             Ingresar al Sistema
           </Button>
@@ -43,7 +43,7 @@ export default function LandingPage() {
               Distribuimos los mejores productos y suplementos naturistas. Potenciamos tu bienestar con la fuerza de la naturaleza y una calidad inquebrantable.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <Link href="/login">
+              <Link href="/sign-in">
                 <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 h-14 px-8 text-lg rounded-full w-full sm:w-auto gap-2">
                   Portal de Gestión <ArrowRight className="w-5 h-5" />
                 </Button>

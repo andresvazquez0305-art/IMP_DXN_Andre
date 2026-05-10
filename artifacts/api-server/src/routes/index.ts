@@ -5,14 +5,14 @@ import clientesRouter from "./clientes";
 import productosRouter from "./productos";
 import ventasRouter from "./ventas";
 import reportesRouter from "./reportes";
-import authRouter from "./auth";
-import usuariosRouter from "./usuarios";
+import meRouter from "./me";
+import invitationsRouter from "./invitations";
 
 const router: IRouter = Router();
 
 router.use(healthRouter);
-router.use("/auth", authRouter);
-router.use("/usuarios", usuariosRouter);
+router.use("/me", meRouter);
+router.use("/invitations", invitationsRouter);
 router.use("/vendedores", vendedoresRouter);
 router.use("/clientes", clientesRouter);
 router.use("/productos", productosRouter);

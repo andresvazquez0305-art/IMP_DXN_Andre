@@ -1,7 +1,8 @@
 import React from "react";
 import { Link, useLocation } from "wouter";
 import { LayoutDashboard, PlusCircle, List, Edit, LogOut, Users } from "lucide-react";
-import { useAuth } from "@/context/auth";
+import { useClerk } from "@clerk/react";
+import { useRole } from "@/hooks/useRole";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return <Sidebar>{children}</Sidebar>;
@@ -9,7 +10,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 export function Sidebar({ children }: { children: React.ReactNode }) {
   const [location, setLocation] = useLocation();
-  const { username, logout, isAdmin } = useAuth();
+  const { signOut } = useClerk();
+  const { data: me } = useRole();
+
+  const isAdmin = me?.rol === "admin";
 
   const links = [
     { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -19,14 +23,13 @@ export function Sidebar({ children }: { children: React.ReactNode }) {
   ];
 
   const handleLogout = () => {
-    logout();
-    setLocation("/login");
+    void signOut().then(() => setLocation("/"));
   };
 
   return (
     <div className="flex min-h-screen bg-background">
       <aside className="w-64 bg-sidebar border-r border-sidebar-border hidden md:flex flex-col flex-shrink-0 relative z-10">
-        <div className="p-6 border-b border-sidebar-border flex items-center justify-center">
+        <div className="p-5 border-b border-sidebar-border flex items-center justify-center">
           <Link href="/">
             <img src="/logo.png" alt="Imparables SA" className="h-14 w-auto cursor-pointer" />
           </Link>
@@ -49,7 +52,7 @@ export function Sidebar({ children }: { children: React.ReactNode }) {
 
           {isAdmin && (
             <>
-              <div className="pt-3 pb-1 px-4">
+              <div className="pt-4 pb-1 px-4">
                 <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Administración</p>
               </div>
               <Link
@@ -64,20 +67,23 @@ export function Sidebar({ children }: { children: React.ReactNode }) {
         </nav>
 
         <div className="p-4 border-t border-sidebar-border space-y-2">
-          {username && (
+          {me && (
             <div className="flex items-center gap-2 px-2 py-1">
-              <div className="w-7 h-7 rounded-full bg-primary/20 flex items-center justify-center text-xs font-bold text-primary flex-shrink-0">
-                {username.charAt(0).toUpperCase()}
-              </div>
+              {me.imageUrl ? (
+                <img src={me.imageUrl} alt={me.nombre ?? ""} className="w-8 h-8 rounded-full object-cover flex-shrink-0" />
+              ) : (
+                <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-xs font-bold text-primary flex-shrink-0">
+                  {(me.nombre ?? me.email ?? "?").charAt(0).toUpperCase()}
+                </div>
+              )}
               <div className="min-w-0">
-                <p className="text-xs font-medium text-foreground truncate">{username}</p>
+                <p className="text-xs font-medium text-foreground truncate">{me.nombre ?? me.email}</p>
                 <p className="text-xs text-muted-foreground">{isAdmin ? "Administrador" : "Vendedor"}</p>
               </div>
             </div>
           )}
           <button
             onClick={handleLogout}
-            data-testid="button-logout"
             className="w-full flex items-center justify-center gap-2 px-4 py-2 text-sm text-muted-foreground hover:text-destructive transition-colors rounded-md hover:bg-destructive/10"
           >
             <LogOut className="w-4 h-4" />
@@ -91,10 +97,7 @@ export function Sidebar({ children }: { children: React.ReactNode }) {
           <Link href="/">
             <img src="/logo.png" alt="Imparables SA" className="h-10 w-auto cursor-pointer" />
           </Link>
-          <button
-            onClick={handleLogout}
-            className="flex items-center gap-1 text-sm text-muted-foreground hover:text-destructive transition-colors"
-          >
+          <button onClick={handleLogout} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-destructive transition-colors">
             <LogOut className="w-4 h-4" />
           </button>
         </header>
