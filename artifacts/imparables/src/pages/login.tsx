@@ -4,7 +4,7 @@ import { useAuth } from "@/context/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Leaf, AlertCircle } from "lucide-react";
+import { AlertCircle } from "lucide-react";
 
 export default function LoginPage() {
   const { login } = useAuth();
@@ -32,13 +32,8 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         <div className="bg-card border border-border rounded-2xl shadow-lg p-8">
           <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-primary/10 mb-4">
-              <Leaf className="w-7 h-7 text-primary" />
-            </div>
-            <h1 className="text-3xl font-serif font-bold text-foreground">
-              Imparables<span className="text-primary">SA</span>
-            </h1>
-            <p className="text-muted-foreground mt-2 text-sm">Portal de Gestión Interno</p>
+            <img src="/logo.png" alt="Imparables SA" className="h-20 w-auto mx-auto mb-4" />
+            <p className="text-muted-foreground text-sm">Portal de Gestión Interno</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">

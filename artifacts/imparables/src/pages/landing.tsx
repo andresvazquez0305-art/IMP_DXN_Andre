@@ -11,9 +11,7 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-background flex flex-col font-sans">
       <header className="h-20 border-b border-border flex items-center justify-between px-6 md:px-12 bg-background/95 backdrop-blur z-50 sticky top-0">
-        <div className="font-serif text-2xl font-bold text-primary tracking-tight">
-          Imparables<span className="text-secondary">SA</span>
-        </div>
+        <img src="/logo.png" alt="Imparables SA" className="h-12 w-auto" />
         <nav className="hidden md:flex items-center gap-8">
           <a href="#nosotros" className="text-sm font-medium text-foreground hover:text-primary transition-colors">Nosotros</a>
           <a href="#productos" className="text-sm font-medium text-foreground hover:text-primary transition-colors">Productos</a>

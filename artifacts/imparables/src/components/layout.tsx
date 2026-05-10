@@ -28,9 +28,7 @@ export function Sidebar({ children }: { children: React.ReactNode }) {
       <aside className="w-64 bg-sidebar border-r border-sidebar-border hidden md:flex flex-col flex-shrink-0 relative z-10">
         <div className="p-6 border-b border-sidebar-border flex items-center justify-center">
           <Link href="/">
-            <div className="font-serif text-2xl font-bold text-sidebar-primary tracking-tight cursor-pointer">
-              Imparables<span className="text-sidebar-accent">SA</span>
-            </div>
+            <img src="/logo.png" alt="Imparables SA" className="h-14 w-auto cursor-pointer" />
           </Link>
         </div>
 
@@ -91,9 +89,7 @@ export function Sidebar({ children }: { children: React.ReactNode }) {
       <main className="flex-1 flex flex-col min-w-0 overflow-hidden">
         <header className="md:hidden h-16 border-b border-border flex items-center justify-between px-4 bg-background">
           <Link href="/">
-            <div className="font-serif text-xl font-bold text-primary cursor-pointer">
-              Imparables<span className="text-secondary">SA</span>
-            </div>
+            <img src="/logo.png" alt="Imparables SA" className="h-10 w-auto cursor-pointer" />
           </Link>
           <button
             onClick={handleLogout}
