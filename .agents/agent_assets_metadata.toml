@@ -29,3 +29,9 @@ id = "B0GteKsZGrDJhqFD4-QbQ"
 uri = "file://imparables_dxn.zip"
 type = "unspecified"
 title = "Imparables SA — Schema MySQL (phpMyAdmin)"
+
+[[outputs]]
+id = "xxJpRNU9ZSvsFP7TOUixf"
+uri = "file://imparables_mysql_pasos.zip"
+type = "unspecified"
+title = "MySQL phpMyAdmin — 8 archivos en orden"

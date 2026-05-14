@@ -9,8 +9,7 @@ router.get("/", requireAuth, async (req, res) => {
   const adminEmail = process.env.ADMIN_EMAIL;
 
   try {
-    const clerk = await clerkClient();
-    const user = await clerk.users.getUser(auth.userId!);
+    const user = await clerkClient.users.getUser(auth.userId!);
     const email = user.emailAddresses.find(
       (e) => e.id === user.primaryEmailAddressId,
     )?.emailAddress;

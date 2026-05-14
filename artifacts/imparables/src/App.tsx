@@ -12,6 +12,7 @@ import Registrar from "@/pages/registrar";
 import Listas from "@/pages/listas";
 import Editar from "@/pages/editar";
 import Usuarios from "@/pages/usuarios";
+import Configuracion from "@/pages/configuracion";
 
 const queryClient = new QueryClient();
 
@@ -158,6 +159,7 @@ function Router() {
             <Route path="/listas">{() => <ProtectedRoute component={Listas} />}</Route>
             <Route path="/editar">{() => <ProtectedRoute component={Editar} />}</Route>
             <Route path="/usuarios">{() => <ProtectedRoute component={Usuarios} />}</Route>
+            <Route path="/configuracion">{() => <ProtectedRoute component={Configuracion} />}</Route>
           </Switch>
           <Toaster />
         </TooltipProvider>

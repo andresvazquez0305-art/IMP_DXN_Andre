@@ -15,8 +15,7 @@ router.post("/", async (req, res) => {
   }
 
   try {
-    const clerk = await clerkClient();
-    const invitation = await clerk.invitations.createInvitation({
+    const invitation = await clerkClient.invitations.createInvitation({
       emailAddress: email,
       redirectUrl: `${process.env.FRONTEND_URL ?? ""}/sign-up`,
       notify: true,
@@ -35,8 +34,7 @@ router.post("/", async (req, res) => {
 // GET /api/invitations — list pending invitations
 router.get("/", async (req, res) => {
   try {
-    const clerk = await clerkClient();
-    const { data } = await clerk.invitations.getInvitationList({ status: "pending" });
+    const { data } = await clerkClient.invitations.getInvitationList({ status: "pending" });
     res.json(data.map((inv) => ({ id: inv.id, email: inv.emailAddress, creadoEn: inv.createdAt })));
   } catch (err) {
     req.log.error(err);
@@ -47,8 +45,7 @@ router.get("/", async (req, res) => {
 // DELETE /api/invitations/:id — revoke invitation
 router.delete("/:id", async (req, res) => {
   try {
-    const clerk = await clerkClient();
-    await clerk.invitations.revokeInvitation(req.params.id);
+    await clerkClient.invitations.revokeInvitation(req.params.id);
     res.json({ message: "Invitación revocada" });
   } catch (err) {
     req.log.error(err);

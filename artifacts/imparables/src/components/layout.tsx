@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useLocation } from "wouter";
-import { LayoutDashboard, PlusCircle, List, Edit, LogOut, Users } from "lucide-react";
+import { LayoutDashboard, PlusCircle, List, Edit, LogOut, Users, Settings } from "lucide-react";
 import { useClerk } from "@clerk/react";
 import { useRole } from "@/hooks/useRole";
 
@@ -61,6 +61,13 @@ export function Sidebar({ children }: { children: React.ReactNode }) {
               >
                 <Users className="h-5 w-5" />
                 Gestión de Usuarios
+              </Link>
+              <Link
+                href="/configuracion"
+                className={`flex items-center gap-3 px-4 py-3 rounded-md transition-colors ${location.startsWith("/configuracion") ? "bg-sidebar-primary text-sidebar-primary-foreground font-medium shadow-sm" : "text-sidebar-foreground hover:bg-sidebar-accent/20 hover:text-sidebar-primary"}`}
+              >
+                <Settings className="h-5 w-5" />
+                Configuración MySQL
               </Link>
             </>
           )}
