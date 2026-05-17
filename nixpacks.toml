@@ -1,4 +1,4 @@
-# Railway config
+# Force redeploy
 
 [phases.install]
 cmds = ["pnpm install --no-frozen-lockfile"]
