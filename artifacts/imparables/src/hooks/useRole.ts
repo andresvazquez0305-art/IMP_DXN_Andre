@@ -1,5 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-import { useUser } from "@clerk/react";
 
 export interface Me {
   userId: string;
@@ -10,8 +9,6 @@ export interface Me {
 }
 
 export function useRole() {
-  const { isSignedIn } = useUser();
-
   return useQuery<Me>({
     queryKey: ["me"],
     queryFn: async () => {
@@ -19,7 +16,7 @@ export function useRole() {
       if (!res.ok) throw new Error("Error al obtener perfil");
       return res.json() as Promise<Me>;
     },
-    enabled: isSignedIn === true,
+    enabled: true,
     staleTime: 60_000,
   });
 }
