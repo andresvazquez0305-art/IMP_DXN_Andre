@@ -217,46 +217,25 @@ function ReportesVentas() {
 
   const [activeDates, setActiveDates] = useState(dates);
 
- const {
+const {
   data: totalRango,
   isLoading: isLoadingRango,
-} = useGetVentasPorRango(
-  {
-    fechaInicio: activeDates.fechaInicio,
-    fechaFin: activeDates.fechaFin,
-  }
-);
+} = useGetVentasPorRango(activeDates);
 
 const {
   data: porCliente,
   isLoading: isLoadingCliente,
-} = useGetVentasPorCliente(
-  {
-    fechaInicio: activeDates.fechaInicio,
-    fechaFin: activeDates.fechaFin,
-  }
-);
+} = useGetVentasPorCliente(activeDates);
 
 const {
   data: porVendedor,
   isLoading: isLoadingVendedor,
-} = useGetVentasPorVendedor(
-  {
-    fechaInicio: activeDates.fechaInicio,
-    fechaFin: activeDates.fechaFin,
-  }
-);
+} = useGetVentasPorVendedor(activeDates);
 
 const {
   data: porProducto,
   isLoading: isLoadingProducto,
-} = useGetVentasPorProducto(
-  {
-    fechaInicio: activeDates.fechaInicio,
-    fechaFin: activeDates.fechaFin,
-  }
-);
-
+} = useGetVentasPorProducto(activeDates);
   const handleSearch = () => {
     setActiveDates(dates);
   };
