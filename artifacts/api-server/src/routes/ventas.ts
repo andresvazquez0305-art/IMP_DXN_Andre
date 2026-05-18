@@ -72,21 +72,36 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res) => {
   const parsed = CreateVentaBody.safeParse(req.body);
+
   if (!parsed.success) {
     res.status(400).json({ error: parsed.error.message });
     return;
   }
+
   try {
+    const hoy = new Date();
+
+    const fechaLocal =
+      `${hoy.getFullYear()}-` +
+      `${String(hoy.getMonth() + 1).padStart(2, "0")}-` +
+      `${String(hoy.getDate()).padStart(2, "0")}`;
+
     const [venta] = await db.insert(ventasTable).values({
       idCliente: parsed.data.idCliente,
       idVendedor: parsed.data.idVendedor,
-      fecha: new Date().toISOString().split("T")[0],
+      fecha: fechaLocal,
     }).returning();
 
     for (const detalle of parsed.data.detalles) {
-      const [producto] = await db.select().from(productosTable).where(eq(productosTable.idProducto, detalle.idProducto));
+      const [producto] = await db
+        .select()
+        .from(productosTable)
+        .where(eq(productosTable.idProducto, detalle.idProducto));
+
       if (!producto) continue;
+
       const subtotal = Number(producto.precio) * detalle.cantidad;
+
       await db.insert(detalleVentasTable).values({
         idVenta: venta.idVenta,
         idProducto: detalle.idProducto,
@@ -96,6 +111,7 @@ router.post("/", async (req, res) => {
     }
 
     const result = await getVentaConDetalle(venta.idVenta);
+
     res.status(201).json(result);
   } catch (err) {
     req.log.error(err);
@@ -105,16 +121,20 @@ router.post("/", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
   const parsed = GetVentaParams.safeParse(req.params);
+
   if (!parsed.success) {
     res.status(400).json({ error: "ID inválido" });
     return;
   }
+
   try {
     const result = await getVentaConDetalle(parsed.data.id);
+
     if (!result) {
       res.status(404).json({ error: "Venta no encontrada" });
       return;
     }
+
     res.json(result);
   } catch (err) {
     req.log.error(err);
@@ -124,15 +144,19 @@ router.get("/:id", async (req, res) => {
 
 router.put("/:id", async (req, res) => {
   const paramsParsed = UpdateVentaParams.safeParse(req.params);
+
   if (!paramsParsed.success) {
     res.status(400).json({ error: "ID inválido" });
     return;
   }
+
   const bodyParsed = UpdateVentaBody.safeParse(req.body);
+
   if (!bodyParsed.success) {
     res.status(400).json({ error: bodyParsed.error.message });
     return;
   }
+
   try {
     const [venta] = await db.update(ventasTable)
       .set({
@@ -141,15 +165,26 @@ router.put("/:id", async (req, res) => {
       })
       .where(eq(ventasTable.idVenta, paramsParsed.data.id))
       .returning();
+
     if (!venta) {
       res.status(404).json({ error: "Venta no encontrada" });
       return;
     }
-    await db.delete(detalleVentasTable).where(eq(detalleVentasTable.idVenta, paramsParsed.data.id));
+
+    await db
+      .delete(detalleVentasTable)
+      .where(eq(detalleVentasTable.idVenta, paramsParsed.data.id));
+
     for (const detalle of bodyParsed.data.detalles) {
-      const [producto] = await db.select().from(productosTable).where(eq(productosTable.idProducto, detalle.idProducto));
+      const [producto] = await db
+        .select()
+        .from(productosTable)
+        .where(eq(productosTable.idProducto, detalle.idProducto));
+
       if (!producto) continue;
+
       const subtotal = Number(producto.precio) * detalle.cantidad;
+
       await db.insert(detalleVentasTable).values({
         idVenta: paramsParsed.data.id,
         idProducto: detalle.idProducto,
@@ -157,7 +192,9 @@ router.put("/:id", async (req, res) => {
         subtotal: String(subtotal),
       });
     }
+
     const result = await getVentaConDetalle(paramsParsed.data.id);
+
     res.json(result);
   } catch (err) {
     req.log.error(err);
@@ -167,16 +204,23 @@ router.put("/:id", async (req, res) => {
 
 router.delete("/:id", async (req, res) => {
   const parsed = DeleteVentaParams.safeParse(req.params);
+
   if (!parsed.success) {
     res.status(400).json({ error: "ID inválido" });
     return;
   }
+
   try {
-    const [deleted] = await db.delete(ventasTable).where(eq(ventasTable.idVenta, parsed.data.id)).returning();
+    const [deleted] = await db
+      .delete(ventasTable)
+      .where(eq(ventasTable.idVenta, parsed.data.id))
+      .returning();
+
     if (!deleted) {
       res.status(404).json({ error: "Venta no encontrada" });
       return;
     }
+
     res.json({ message: "Venta eliminada correctamente" });
   } catch (err) {
     req.log.error(err);
