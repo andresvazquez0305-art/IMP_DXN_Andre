@@ -56,7 +56,7 @@ router.get("/por-cliente", async (req, res) => {
       .leftJoin(detalleVentasTable, eq(ventasTable.idVenta, detalleVentasTable.idVenta))
       .where(between(ventasTable.fecha, fechaInicio as string, fechaFin as string))
       .groupBy(clientesTable.idCliente, clientesTable.nombre, clientesTable.primerApellido, clientesTable.segundoApellido)
-      .orderBy(sql`total_cliente DESC`);
+      .orderBy(sql`COALESCE(SUM(${detalleVentasTable.subtotal}), 0) DESC`);
 
     res.json(rows.map((r) => ({
       idCliente: r.idCliente,
@@ -92,7 +92,7 @@ router.get("/por-vendedor", async (req, res) => {
       .leftJoin(detalleVentasTable, eq(ventasTable.idVenta, detalleVentasTable.idVenta))
       .where(between(ventasTable.fecha, fechaInicio as string, fechaFin as string))
       .groupBy(vendedoresTable.idVendedor, vendedoresTable.nombre, vendedoresTable.primerApellido, vendedoresTable.segundoApellido)
-      .orderBy(sql`total_vendedor DESC`);
+      .orderBy(sql`COALESCE(SUM(${detalleVentasTable.subtotal}), 0) DESC`);
 
     res.json(rows.map((r) => ({
       idVendedor: r.idVendedor,
@@ -127,7 +127,7 @@ router.get("/por-producto", async (req, res) => {
       .innerJoin(productosTable, eq(detalleVentasTable.idProducto, productosTable.idProducto))
       .where(between(ventasTable.fecha, fechaInicio as string, fechaFin as string))
       .groupBy(productosTable.idProducto, productosTable.nombreProducto)
-      .orderBy(sql`total_vendido DESC`);
+      .orderBy(sql`COALESCE(SUM(${detalleVentasTable.subtotal}), 0) DESC`);
 
     res.json(rows.map((r) => ({
       idProducto: r.idProducto,
