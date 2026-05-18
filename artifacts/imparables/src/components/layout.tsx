@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useLocation } from "wouter";
 import { LayoutDashboard, PlusCircle, List, Edit, LogOut, Users, Settings } from "lucide-react";
-import { useClerk } from "@clerk/react";
+//import { useClerk } from "@clerk/react";
 import { useRole } from "@/hooks/useRole";
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -10,7 +10,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 export function Sidebar({ children }: { children: React.ReactNode }) {
   const [location, setLocation] = useLocation();
-  const { signOut } = useClerk();
+  //Clerk desactivado temporalmente
   const { data: me } = useRole();
 
   const isAdmin = me?.rol === "admin";
@@ -23,7 +23,7 @@ export function Sidebar({ children }: { children: React.ReactNode }) {
   ];
 
   const handleLogout = () => {
-    void signOut().then(() => setLocation("/"));
+     setLocation("/");
   };
 
   return (
