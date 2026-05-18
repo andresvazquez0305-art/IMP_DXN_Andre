@@ -178,7 +178,7 @@ function VerVentas() {
                 {data?.map(v => (
                   <TableRow key={v.idVenta}>
                     <TableCell>{v.idVenta}</TableCell>
-                    <TableCell>{new Date(v.fecha).toLocaleDateString()}</TableCell>
+                    <TableCell>{v.fecha}</TableCell>
                     <TableCell>{v.nombreCliente}</TableCell>
                     <TableCell>{v.nombreVendedor}</TableCell>
                     <TableCell className="font-semibold text-primary">${v.total.toFixed(2)}</TableCell>
